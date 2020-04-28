@@ -1,31 +1,27 @@
-import React, { useState } from 'react';
-import Avatar from '@material-ui/core/Avatar';
+import React, { useState,useEffect } from 'react';
+import { useDispatch,useSelector } from 'react-redux';
 import Button from '@material-ui/core/Button';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import TextField from '@material-ui/core/TextField';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import Link from '@material-ui/core/Link';
-import Grid from '@material-ui/core/Grid';
-import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
-
 import Container from '@material-ui/core/Container';
 import useStyles from './style.js';
-
+import { loginAction } from './../../actions/authActions';
 
 
 export default function Login() {
 
     const classes = useStyles();
+    const dispatch = useDispatch();
     const [email, setEmail] = useState("");
     const [email_error, setEmailError] = useState(false);
     const [password, setPassword] = useState("");
     const [password_error, setPasswordError] = useState(false);
-
-    // handleChange(event) {
-    //     this.setState({value: event.target.value});
-    //   }
+    
+    
+    const loading = useSelector(state => state.auth.loading);
+   
+ 
 
     function handleSubmit(event) {
         event.preventDefault();
@@ -36,16 +32,26 @@ export default function Login() {
         }
         else 
         {
-            alert("Good to go ");
+            dispatch(loginAction({
+                email:email,
+                password:password
+            }));
         }
         
-        
-
-
     }
 
+  
 
 
+    let loginButtonLabel;
+    if (loading)
+    {
+        loginButtonLabel="Loading";
+    }
+    else
+    {
+        loginButtonLabel="Login";
+    }
 
     return (
         <Container component="main" maxWidth="xs">
@@ -87,7 +93,7 @@ export default function Login() {
                         variant="contained"
                         className={classes.button}
                     >
-                        Sign In
+                        {loginButtonLabel}
                     </Button>
 
                 </form>
