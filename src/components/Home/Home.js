@@ -72,6 +72,10 @@ export default function Home(props) {
         
         // get the page number of the route
         var current_route_page=props.match.params.page;
+        if (!current_route_page)
+        {
+            current_route_page=1;
+        }
 
         // fetch the data if the data state is null or route's page number is not the same as current page of the data
         if (data==null || (data.length>0 && (current_route_page && current_route_page!=page)) ) 

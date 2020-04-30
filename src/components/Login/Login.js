@@ -38,10 +38,7 @@ export default function Login() {
         }
         
     }
-
-  
-
-
+    
     let loginButtonLabel;
     if (loading)
     {
