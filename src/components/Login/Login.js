@@ -1,13 +1,12 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState } from 'react';
 import { useDispatch,useSelector } from 'react-redux';
-import Button from '@material-ui/core/Button';
-import CssBaseline from '@material-ui/core/CssBaseline';
-import TextField from '@material-ui/core/TextField';
-import Typography from '@material-ui/core/Typography';
-import Container from '@material-ui/core/Container';
+import {
+    Button,CssBaseline,TextField,Typography,Container
+} from '@material-ui/core';
+
 import useStyles from './style.js';
 import { loginAction } from './../../actions/authActions';
-
+import {Animated} from "react-animated-css";
 
 export default function Login() {
 
@@ -46,7 +45,7 @@ export default function Login() {
     let loginButtonLabel;
     if (loading)
     {
-        loginButtonLabel="Loading";
+        loginButtonLabel="Please wait...";
     }
     else
     {
@@ -56,6 +55,7 @@ export default function Login() {
     return (
         <Container component="main" maxWidth="xs">
             <CssBaseline />
+            <Animated animationIn="slideInDown"  isVisible={true} animationInDelay ={10}>
             <div className={classes.form_container}>
 
                 <Typography component="h1" variant="h5">
@@ -92,13 +92,14 @@ export default function Login() {
                         fullWidth
                         variant="contained"
                         className={classes.button}
+                        disabled={loading}
                     >
                         {loginButtonLabel}
                     </Button>
 
                 </form>
             </div>
-
+            </Animated>
         </Container>
     );
 }

@@ -1,11 +1,12 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {  useEffect } from 'react';
 import Login from './../Login/Login.js';
 import Home from './../Home/Home.js';
-import { Route, Link, Switch } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { Route, Switch,Redirect } from 'react-router-dom';
+import {  useSelector } from 'react-redux';
 import { useHistory } from "react-router-dom";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'
+import * as cache from './../../helpers/cache.js'
 
 
 export default function Wrapper() {
@@ -16,7 +17,8 @@ export default function Wrapper() {
     const login_status = useSelector(state => state.auth.login_status);
 
 
-    useEffect(() => {
+    function showToast(message)
+    {
         if (message) {
 
             if (message.success) {
@@ -32,16 +34,36 @@ export default function Wrapper() {
                 });
             }
         }
+    }
 
-        if (login_status) {
+
+    useEffect(() => {
+        
+        showToast(message);
+
+        if (login_status)
+        {
             if (history.location.pathname == "/login") {
-                history.push("/home");
+                window.location="/home";
             }
         }
+        else 
+        {
+            if (history.location.pathname != "/login") {
+                window.location="/login";
+            }
+        }
+        
 
     })
 
-
+    const PrivateRoute = ({ component: Component, ...rest }) => (
+        <Route {...rest} render={(props) => (
+          cache.getFromCache()!==null
+            ? <Component {...props} />
+            : <Redirect to='/login' />
+        )} />
+      )
 
 
 
@@ -50,10 +72,11 @@ export default function Wrapper() {
         <div className="Navbar">
             <ToastContainer />
             <Switch>
+                <Route exact path="/" component={Login} />
                 <Route exact path="/login" component={Login} />
-                <Route exact path="/home" component={Home} />
-
+                <PrivateRoute path='/home/:page?' component={Home} />
             </Switch>
+            
 
         </div>
 

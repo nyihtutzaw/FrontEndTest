@@ -1,10 +1,11 @@
 import { LOGIN,LOGIN_LOADING,SET_LOGIN_STATUS } from './../actions/types.js';
+import * as cache from './../helpers/cache.js'
 
 const initialState = {
    user:null,
    loading:false,
    success:null,
-   login_status:false,
+   login_status:cache.getFromCache()==null?false:true,
 };
 
 export default function(state = initialState, action) {
@@ -28,6 +29,7 @@ export default function(state = initialState, action) {
 
     case SET_LOGIN_STATUS: 
     {
+        
         return {
             ...state,
             login_status:action.payload.status,
